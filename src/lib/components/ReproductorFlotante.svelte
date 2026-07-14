@@ -238,7 +238,7 @@
 		// style="{estiloPos()} touch-action: none; max-width: 540px;"
 	>
 		<div
-			class="relative rounded-3xl overflow-hidden transition-all duration-300"
+			class="relative rounded-3xl z-50 overflow-hidden transition-all duration-300"
 			style="
 				box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
 				transform: {isDragging ? 'scale(1.02)' : 'scale(1)'};

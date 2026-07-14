@@ -230,15 +230,15 @@
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<div
 		bind:this={contenedor}
-		onmousedown={iniciarArrastre}
-		ontouchstart={iniciarArrastre}
+		// onmousedown={iniciarArrastre}
+		// ontouchstart={iniciarArrastre}
 		class="fixed z-[9999] bottom-5 max-w-xl right-2 select-none w-[80%] bg-zinc-950 text-white rounded-3xl"
-		class:cursor-grabbing={isDragging}
-		class:cursor-grab={!isDragging}
+		// class:cursor-grabbing={isDragging}
+		// class:cursor-grab={!isDragging}
 		// style="{estiloPos()} touch-action: none; max-width: 540px;"
 	>
 		<div
-			class="relative rounded-3xl z-50 overflow-hidden transition-all duration-300"
+			class="relative rounded-3xl overflow-hidden transition-all duration-300"
 			style="
 				box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
 				transform: {isDragging ? 'scale(1.02)' : 'scale(1)'};

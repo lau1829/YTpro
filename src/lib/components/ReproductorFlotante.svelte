@@ -24,7 +24,7 @@
 	let streamListo = $derived(state.activo && !!state.url);
 	let progreso = $derived(duracion > 0 ? (tiempoActual / duracion) * 100 : 0);
 
-	videoMinimizado.subscribe(newState => {
+	videoMinimizado.subscribe((newState) => {
 		const eraActivo = state?.activo;
 		state = newState;
 		// Resetear posición y estado solo cuando se activa por primera vez
@@ -232,10 +232,10 @@
 		bind:this={contenedor}
 		onmousedown={iniciarArrastre}
 		ontouchstart={iniciarArrastre}
-		class="fixed z-[9999] animate-fade-in-up select-none w-[80%] bg-zinc-950 text-white rounded-3xl"
+		class="fixed z-[9999] bottom-5 max-w-xl right-2 select-none w-[80%] bg-zinc-950 text-white rounded-3xl"
 		class:cursor-grabbing={isDragging}
 		class:cursor-grab={!isDragging}
-		style="{estiloPos()} touch-action: none; max-width: 540px;"
+		// style="{estiloPos()} touch-action: none; max-width: 540px;"
 	>
 		<div
 			class="relative rounded-3xl overflow-hidden transition-all duration-300"
@@ -286,15 +286,21 @@
 
 				<!-- Spinner de carga -->
 				{#if !streamListo || cargando}
-					<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm gap-3 pointer-events-none">
-						<div class="w-10 h-10 rounded-full border-2 border-white/10 border-t-blue-500 animate-spin"></div>
+					<div
+						class="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm gap-3 pointer-events-none"
+					>
+						<div
+							class="w-10 h-10 rounded-full border-2 border-white/10 border-t-blue-500 animate-spin"
+						></div>
 					</div>
 				{/if}
 
 				<!-- Overlay de controles (aparece con hover, estilo PiP/YouTube) -->
 				<div
 					class="absolute inset-0 flex flex-col justify-between transition-opacity duration-200 pointer-events-none"
-					style="opacity: {mostrarControles || isDragging ? 1 : 0}; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.65) 100%);"
+					style="opacity: {mostrarControles || isDragging
+						? 1
+						: 0}; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.65) 100%);"
 				>
 					<!-- Barra superior: expandir / cerrar -->
 					<div class="flex items-center justify-between px-2 pt-2 pointer-events-auto">
@@ -303,8 +309,18 @@
 							class="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors"
 							title="Expandir"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-								<path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="13"
+								height="13"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.4"
+							>
+								<path
+									d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M3 16v3a2 2 0 0 0 2 2h3"
+								/>
 							</svg>
 						</button>
 
@@ -313,36 +329,84 @@
 							class="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/80 transition-colors group/close"
 							title="Cerrar"
 						>
-							<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8">
-								<path d="M18 6L6 18M6 6l12 12"/>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="12"
+								height="12"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2.8"
+							>
+								<path d="M18 6L6 18M6 6l12 12" />
 							</svg>
 						</button>
 					</div>
 
 					<!-- Controles centrales: retroceder / play-pausa / avanzar -->
 					<div class="flex items-center justify-center gap-5 pointer-events-auto">
-						<button onclick={(e) => saltar(-10, e)} class="w-8 h-8 flex items-center justify-center text-white/90 hover:text-white transition-colors" title="Retroceder 10s">
-							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-								<path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
+						<button
+							onclick={(e) => saltar(-10, e)}
+							class="w-8 h-8 flex items-center justify-center text-white/90 hover:text-white transition-colors"
+							title="Retroceder 10s"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+							>
+								<path
+									d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+								/>
 							</svg>
 						</button>
 
-						<button onclick={togglePlay} class="w-11 h-11 rounded-full flex items-center justify-center bg-white/15 hover:bg-white/25 transition-colors" title={reproduciendo ? 'Pausar' : 'Reproducir'}>
+						<button
+							onclick={togglePlay}
+							class="w-11 h-11 rounded-full flex items-center justify-center bg-white/15 hover:bg-white/25 transition-colors"
+							title={reproduciendo ? 'Pausar' : 'Reproducir'}
+						>
 							{#if reproduciendo}
-								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
-									<rect x="6" y="4" width="4" height="16" rx="1"/>
-									<rect x="14" y="4" width="4" height="16" rx="1"/>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="white"
+								>
+									<rect x="6" y="4" width="4" height="16" rx="1" />
+									<rect x="14" y="4" width="4" height="16" rx="1" />
 								</svg>
 							{:else}
-								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="white">
-									<path d="M8 5v14l11-7z"/>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="white"
+								>
+									<path d="M8 5v14l11-7z" />
 								</svg>
 							{/if}
 						</button>
 
-						<button onclick={(e) => saltar(10, e)} class="w-8 h-8 flex items-center justify-center text-white/90 hover:text-white transition-colors" title="Avanzar 10s">
-							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-								<path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/>
+						<button
+							onclick={(e) => saltar(10, e)}
+							class="w-8 h-8 flex items-center justify-center text-white/90 hover:text-white transition-colors"
+							title="Avanzar 10s"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="20"
+								height="20"
+								viewBox="0 0 24 24"
+								fill="currentColor"
+							>
+								<path
+									d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"
+								/>
 							</svg>
 						</button>
 					</div>
@@ -353,14 +417,34 @@
 							<span class="text-[10px] text-white/80 font-medium tabular-nums">
 								{formatTiempo(tiempoActual)} / {formatTiempo(duracion)}
 							</span>
-							<button onclick={toggleMute} class="w-6 h-6 flex items-center justify-center text-white/90 hover:text-white transition-colors" title={silenciado ? 'Activar sonido' : 'Silenciar'}>
+							<button
+								onclick={toggleMute}
+								class="w-6 h-6 flex items-center justify-center text-white/90 hover:text-white transition-colors"
+								title={silenciado ? 'Activar sonido' : 'Silenciar'}
+							>
 								{#if silenciado}
-									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-										<path d="M16.5 12A4.5 4.5 0 0 0 14 8v1.79l2.48 2.48c.01-.09.02-.18.02-.27zM19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="15"
+										height="15"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+									>
+										<path
+											d="M16.5 12A4.5 4.5 0 0 0 14 8v1.79l2.48 2.48c.01-.09.02-.18.02-.27zM19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51A8.796 8.796 0 0 0 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"
+										/>
 									</svg>
 								{:else}
-									<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-										<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="15"
+										height="15"
+										viewBox="0 0 24 24"
+										fill="currentColor"
+									>
+										<path
+											d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 8v8a4.5 4.5 0 0 0 2.5-4zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+										/>
 									</svg>
 								{/if}
 							</button>
@@ -373,7 +457,9 @@
 							ontouchstart={iniciarSeek}
 							class="barra-progreso relative w-full h-3 flex items-center cursor-pointer group/bar"
 						>
-							<div class="relative w-full h-[3px] rounded-full bg-white/25 group-hover/bar:h-[5px] transition-all">
+							<div
+								class="relative w-full h-[3px] rounded-full bg-white/25 group-hover/bar:h-[5px] transition-all"
+							>
 								<div
 									class="absolute left-0 top-0 h-full rounded-full bg-red-500"
 									style="width: {progreso}%;"

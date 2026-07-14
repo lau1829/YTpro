@@ -166,21 +166,28 @@ async function getDirectStreamUrl(videoId) {
         console.log('📹 Iniciando getDirectStreamUrl...');
         const yt = await getYT();
         
-        // console.log('📡 Obteniendo info del video con cliente ANDROID...');
         const info = await yt.getInfo(videoId, { client: 'ANDROID' });
         
-        // console.log('🔍 Buscando mejor formato video+audio...');
-        const format = info.chooseFormat({
+        // Intenta buscar el mejor formato que ya combina video y audio
+        let format = info.chooseFormat({
             type: 'video+audio',
             quality: 'best'
         });
         
+        // Si no lo encuentra (común en Shorts), busca el mejor video y el mejor audio por separado
         if (!format) {
-            throw new Error('No se encontró un formato reproducible');
+            console.log('⚠️ No se encontró formato video+audio. Buscando por separado (adaptativo)...');
+            const videoFormat = info.chooseFormat({ type: 'video', quality: 'best' });
+            const audioFormat = info.chooseFormat({ type: 'audio', quality: 'best' });
+
+            if (!videoFormat || !audioFormat) {
+                throw new Error('No se encontraron formatos de video/audio adaptativos reproducibles.');
+            }
+            // Usamos el formato de video y le añadimos la URL del audio.
+            // El reproductor web moderno puede manejar esto.
+            format = videoFormat;
+            format.audio_url = (await audioFormat.decipher(yt.session.player));
         }
-        
-        // console.log(`📦 Formato encontrado: ${format.mime_type}, quality: ${format.quality_label}`);
-        // console.log('🔐 Descifrando URL...');
         
         const streamUrl = await format.decipher(yt.session.player);
         
@@ -191,6 +198,7 @@ async function getDirectStreamUrl(videoId) {
             quality: format.quality_label || 'unknown',
             fps: format.fps || 30,
             mime: format.mime_type || 'video/mp4',
+            audio_url: format.audio_url || null // Se añade la URL del audio si existe
         };
     } catch (error) {
         console.error(`❌ Error en getDirectStreamUrl:`, error.message);

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" fill="#000000"/>
+  
+  <!-- Play button -->
+  <path d="M 45 35 L 45 93 L 90 64 Z" fill="#FF0000"/>
+  
+  <!-- Text "PRO" -->
+  <text x="64" y="110" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#FFFFFF" text-anchor="middle">PRO</text>
+</svg>

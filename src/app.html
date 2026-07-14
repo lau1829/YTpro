@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="text-scale" content="scale" />
+		<meta name="view-transition" content="same-origin" />
+		
+		<!-- PWA Meta Tags -->
+		<meta name="theme-color" content="#000000" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+		<meta name="apple-mobile-web-app-title" content="YTpro" />
+		<meta name="description" content="Reproductor de YouTube con cola de reproducción y descarga de videos" />
+		
+		<!-- PWA Manifest -->
+		<link rel="manifest" href="/manifest.json" />
+		
+		<!-- Icons -->
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/icon-192.png" />
+		
+		<style>
+			/* View Transitions API */
+			@view-transition {
+				navigation: auto;
+			}
+			
+			/* Transición suave para el reproductor de video */
+			::view-transition-group(root) {
+				animation-duration: 0.5s;
+				animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+			}
+			
+			/* Transición específica para el video player */
+			::view-transition-old(video-player-*),
+			::view-transition-new(video-player-*) {
+				animation-duration: 0.5s;
+				animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+			}
+			
+			/* Prevenir parpadeo durante la transición */
+			::view-transition-old(video-player-*) {
+				animation: none;
+				mix-blend-mode: normal;
+			}
+			
+			::view-transition-new(video-player-*) {
+				animation: none;
+				mix-blend-mode: normal;
+			}
+		</style>
+		
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+		
+		<!-- Service Worker Registration -->
+		<script>
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker
+						.register('/sw.js')
+						.then((registration) => {
+							console.log('✅ Service Worker registrado:', registration.scope);
+							
+							// Escuchar actualizaciones del SW
+							registration.addEventListener('updatefound', () => {
+								const newWorker = registration.installing;
+								newWorker.addEventListener('statechange', () => {
+									if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+										console.log('🔄 Nueva versión disponible');
+										// Opcional: mostrar notificación al usuario
+										if (confirm('Nueva versión disponible. ¿Recargar ahora?')) {
+											newWorker.postMessage({ type: 'SKIP_WAITING' });
+											window.location.reload();
+										}
+									}
+								});
+							});
+						})
+						.catch((error) => {
+							console.error('❌ Error al registrar Service Worker:', error);
+						});
+				});
+				
+				// Recargar cuando el nuevo SW tome control
+				navigator.serviceWorker.addEventListener('controllerchange', () => {
+					window.location.reload();
+				});
+			}
+		</script>
+	</body>
+</html>

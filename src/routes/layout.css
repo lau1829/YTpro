@@ -1,0 +1,36 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@import 'tailwind-animations';
+
+.font-sup {
+	font-family: 'Luckiest Guy', cursive;
+	font-weight: 400;
+	font-style: normal;
+}
+/* Estilos globales para el scrollbar */
+::-webkit-scrollbar {
+	width: 8px; /* Ancho del scroll vertical */
+	height: 8px; /* Alto del scroll horizontal */
+}
+
+/* El fondo por donde corre el scroll (Track) */
+::-webkit-scrollbar-track {
+	background: #000000; /* Totalmente negro para camuflarse con tu app */
+}
+
+/* La barrita que se mueve (Thumb) */
+::-webkit-scrollbar-thumb {
+	background: #222222; /* Un gris muy oscuro para el estado normal */
+	border-radius: 4px; /* Bordes sutilmente redondeados */
+	border: 1px solid #000000; /* Separación sutil */
+}
+
+/* Cuando pasas el mouse por encima o lo arrastras */
+::-webkit-scrollbar-thumb:hover {
+	background: #e1e1e1; /* Cambia al blanco grisáceo llamativo que te gusta */
+}
+
+* {
+	outline: none;
+}

@@ -6,7 +6,7 @@
  * Buscar videos en YouTube
  */
 export async function buscarVideos(query, continuarBusqueda = false) {
-	const res = await fetch('/YTpro', {
+	const res = await fetch('https://y-tpro.vercel.app/YTpro/YTpro', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
